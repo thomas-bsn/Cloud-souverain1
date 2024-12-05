@@ -5,12 +5,13 @@ const { handleMessage } = require('./messageHandler');
 function connectToStomp() {
     console.log("Connexion au serveur STOMP...");
 
-    const manager = new stompit.ConnectFailover(servers, {
-        initialReconnectDelay: 100, 
-        maxReconnectDelay: 30000, 
-        useExponentialBackOff: true, 
-        maxReconnects: 1,
-        randomize: false 
+    const manager = new stompit.ConnectFailover(servers, 
+    {
+        initialReconnectDelay: 100,
+        maxReconnectDelay: 30000,
+        useExponentialBackOff: true,
+        maxReconnects: 30,
+        randomize: false
     });
 
     manager.connect((error, client) => {

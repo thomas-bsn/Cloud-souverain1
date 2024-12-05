@@ -4,7 +4,7 @@ const connectionHeaders = {
     host: '/',
     'client-id': 'thomas-david',
     login: 'b3935f56-98da-4d38-ab19-6a44660cdb11',
-    passcode: "$h~$7p4!:q=LtCuNHqG4G%q\\"
+    passcode: "$h~$7p4!:q=LtCuNHqG4G%q\""
 };
 
 // Définir les serveurs STOMP
