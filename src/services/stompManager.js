@@ -1,18 +1,17 @@
 const stompit = require('stompit');
-const { connectionHeaders, servers, subscribeHeaders } = require('../config/stompConfig');
+const { servers, subscribeHeaders } = require('../config/stompConfig');
 const { handleMessage } = require('./messageHandler');
 
 function connectToStomp() {
-    const manager = new stompit.ConnectFailover(
-        servers.map(server => ({ ...server, connectHeaders: connectionHeaders })),
-        {
-            initialReconnectDelay: 100,
-            maxReconnectDelay: 30000,
-            useExponentialBackOff: true,
-            maxReconnects: 30,
-            randomize: false
-        }
-    );
+    console.log("Connexion au serveur STOMP...");
+
+    const manager = new stompit.ConnectFailover(servers, {
+        initialReconnectDelay: 100, 
+        maxReconnectDelay: 30000, 
+        useExponentialBackOff: true, 
+        maxReconnects: 1,
+        randomize: false 
+    });
 
     manager.connect((error, client) => {
         if (error) {
@@ -25,6 +24,7 @@ function connectToStomp() {
 }
 
 function subscribeToTopic(client) {
+    console.log("Souscription au topic...");
     client.subscribe(subscribeHeaders, (error, message) => {
         if (error) {
             console.error('Erreur de souscription:', error.message);
