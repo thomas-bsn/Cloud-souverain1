@@ -1,4 +1,40 @@
-const { fetchDocumentTitle } = require('./documentService');
+const { fetchDocument } = require('./documentService');
+const { broadcastEvent } = require('../websocketServer');
+
+
+function createDisplayData(requete) {
+    const dataelements = requete?.data[0]?.dataelements || {};
+    const ownerInfo = requete?.data[0]?.relateddata?.ownerInfo?.[0]?.dataelements || {};
+
+    return {
+        title: dataelements.title || "Non disponible",
+        name: dataelements.name || "Non disponible",
+        type: dataelements.typeNLS || "Non disponible",
+        state: dataelements.stateNLS || "Non disponible",
+        revision: dataelements.revision || "Non disponible",
+        collabSpace: dataelements.collabSpaceTitle || "Non disponible",
+        created: new Date(dataelements.originated).toLocaleString() || "Non disponible",
+        modified: new Date(dataelements.modified).toLocaleString() || "Non disponible",
+        owner: `${ownerInfo.firstname || ""} ${ownerInfo.lastname || ""}`.trim() || "Non disponible",
+    };
+}
+
+function prettyPrintDocumentData(documentData) 
+{
+    console.log("===== Détails du document =====");
+    console.log(`Titre : ${documentData.title}`);
+    console.log(`Nom : ${documentData.name}`);
+    console.log(`Type : ${documentData.type}`);
+    console.log(`État : ${documentData.state}`);
+    console.log(`Révision : ${documentData.revision}`);
+    console.log(`Espace collaboratif : ${documentData.collabSpace}`);
+    console.log(`Créé le : ${documentData.created}`);
+    console.log(`Modifié le : ${documentData.modified}`);
+    console.log(`Propriétaire : ${documentData.owner}`);
+    console.log("================================");
+    console.log("\n");
+}
+
 
 async function handleMessage(messageBody) {
     try {
@@ -9,22 +45,21 @@ async function handleMessage(messageBody) {
             const relativePath = subject.subject.relativePath;
             const sourceUrl = message.source;
 
-            let nom_doc = 'Titre non disponible';
-            if (relativePath && sourceUrl) {
-                nom_doc = await fetchDocumentTitle(relativePath, sourceUrl);
-                if (!nom_doc) {
-                    nom_doc = 'Titre non disponible';
-                }
+            var requete = await fetchDocument(relativePath, sourceUrl);
+            if (!requete) 
+            {
+                console.error("Erreur lors de la récupération entiere de la requete");
+                return;    
             }
 
-            console.log(`Titre du document : ${nom_doc}`);
-            console.log(`Type du document : ${subject.subject.type}`);
-            console.log(`Auteur du document : ${subject.user}`);
-            console.log(`ID du document : ${subject.subject.identifier}`);
-            console.log(`Chemin relatif du document : ${subject.subject.relativePath}`);
-            console.log(`Type d'événement : ${subject.eventType}`);
+            // Créer la structure de données
+            const documentData = createDisplayData(requete);
 
-            console.log("\n\n");
+            // Afficher les données parsées
+            prettyPrintDocumentData(documentData);
+
+            broadcastEvent(documentData);
+
         } else {
             console.log("Le message ne contient pas les champs 'data'.");
         }

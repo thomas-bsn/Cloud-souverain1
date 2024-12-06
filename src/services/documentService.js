@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { connectionHeaders } = require('../config/stompConfig');
 
-async function fetchDocumentTitle(relativePath, sourceUrl) {
+async function fetchDocument(relativePath, sourceUrl) {
     try {
 
         const url = `${sourceUrl}${relativePath}`;
@@ -15,11 +15,11 @@ async function fetchDocumentTitle(relativePath, sourceUrl) {
 
         // console.log(documentData.data[0].dataelements);
 
-        return documentData.data[0].dataelements.title || 'Titre non disponible';
+        return documentData
     } catch (error) {
-        console.error('Erreur lors de la récupération du titre:', error.message);
+        console.error('Erreur lors de la récupération du body:', error.message);
         return null;
     }
 }
 
-module.exports = { fetchDocumentTitle };
+module.exports = { fetchDocument };
