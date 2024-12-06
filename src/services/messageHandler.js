@@ -7,15 +7,17 @@ function createDisplayData(requete) {
     const ownerInfo = requete?.data[0]?.relateddata?.ownerInfo?.[0]?.dataelements || {};
 
     return {
-        title: dataelements.title || "Non disponible",
-        name: dataelements.name || "Non disponible",
-        type: dataelements.typeNLS || "Non disponible",
-        state: dataelements.stateNLS || "Non disponible",
-        revision: dataelements.revision || "Non disponible",
-        collabSpace: dataelements.collabSpaceTitle || "Non disponible",
-        created: new Date(dataelements.originated).toLocaleString() || "Non disponible",
-        modified: new Date(dataelements.modified).toLocaleString() || "Non disponible",
-        owner: `${ownerInfo.firstname || ""} ${ownerInfo.lastname || ""}`.trim() || "Non disponible",
+        title: dataelements.title || "",
+        name: dataelements.name || "",
+        type: dataelements.typeNLS || "",
+        state: dataelements.stateNLS || "",
+        revision: dataelements.revision || "",
+        description: dataelements.description || "",
+        collabSpace: dataelements.collabSpaceTitle || "",
+        created: new Date(dataelements.originated).toLocaleString() || "",
+        modified: new Date(dataelements.modified).toLocaleString() || "",
+        owner: `${ownerInfo.firstname || ""} ${ownerInfo.lastname || ""}`.trim() || "",
+        relativePath: `${requete?.data[0]?.source}${requete?.data[0]?.relativePath}` || "",
     };
 }
 
@@ -27,10 +29,12 @@ function prettyPrintDocumentData(documentData)
     console.log(`Type : ${documentData.type}`);
     console.log(`État : ${documentData.state}`);
     console.log(`Révision : ${documentData.revision}`);
+    console.log(`Description : ${documentData.description}`);
     console.log(`Espace collaboratif : ${documentData.collabSpace}`);
     console.log(`Créé le : ${documentData.created}`);
     console.log(`Modifié le : ${documentData.modified}`);
     console.log(`Propriétaire : ${documentData.owner}`);
+    console.log(`Chemin relatif : ${documentData.relativePath}`);
     console.log("================================");
     console.log("\n");
 }

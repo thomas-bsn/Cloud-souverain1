@@ -46,23 +46,44 @@ function App() {
             <p><strong>Type :</strong> {event.type}</p>
             <p><strong>État :</strong> {event.state}</p>
             <p><strong>Révision :</strong> {event.revision}</p>
+            <p><strong>Description :</strong> {event.description}</p>
             <p><strong>Espace collaboratif :</strong> {event.collabSpace}</p>
             <p><strong>Créé le :</strong> {event.created}</p>
             <p><strong>Modifié le :</strong> {event.modified}</p>
             <p><strong>Propriétaire :</strong> {event.owner}</p>
-            <button
-              onClick={() => handleDeleteEvent(index)}
-              style={{
-                backgroundColor: '#e74c3c',
-                color: 'white',
-                border: 'none',
-                padding: '5px 10px',
-                borderRadius: '5px',
-                cursor: 'pointer',
-              }}
-            >
-              Supprimer
-            </button>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              {/* Bouton bleu pour rediriger vers le fichier */}
+              <a
+                href={event.relativePath}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  textDecoration: 'none',
+                  backgroundColor: '#3498db',
+                  color: 'white',
+                  padding: '5px 10px',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                }}
+              >
+                Voir le fichier
+              </a>
+
+              {/* Bouton rouge pour supprimer l'événement */}
+              <button
+                onClick={() => handleDeleteEvent(index)}
+                style={{
+                  backgroundColor: '#e74c3c',
+                  color: 'white',
+                  border: 'none',
+                  padding: '5px 10px',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                }}
+              >
+                Supprimer
+              </button>
+            </div>
           </li>
         ))}
       </ul>
