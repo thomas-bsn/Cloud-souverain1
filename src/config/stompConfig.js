@@ -1,4 +1,3 @@
-// Définir les en-têtes de connexion
 const connectionHeaders = {
     'heart-beat': '5000,0',
     host: '/',
@@ -7,7 +6,6 @@ const connectionHeaders = {
     passcode: "$h~$7p4!:q=LtCuNHqG4G%q\""
 };
 
-// Définir les serveurs STOMP
 const servers = [
     {
         ssl: true,
@@ -23,14 +21,12 @@ const servers = [
     }
 ];
 
-// Définir les en-têtes de souscription
 const subscribeHeaders = {
     "destination": "/topic/3dsevents.R1132102747346.3DSpace.user",
     "activemq.subscriptionName": "david_thomas_cyb3",
     "ack": "client-individual"
 };
 
-// Exporter les configurations
 module.exports = {
     connectionHeaders,
     servers,
