@@ -3,9 +3,8 @@ const { connectionHeaders } = require('../config/stompConfig');
 
 async function fetchDocumentTitle(relativePath, sourceUrl) {
     try {
-        const baseUrl = sourceUrl.replace(/\/enovia$/, '');
 
-        const url = `${baseUrl}${relativePath}`;
+        const url = `${sourceUrl}${relativePath}`;
 
         const headers = {
             Authorization: `Basic ${Buffer.from(`${connectionHeaders.login}:${connectionHeaders.passcode}`).toString('base64')}`
@@ -13,11 +12,10 @@ async function fetchDocumentTitle(relativePath, sourceUrl) {
 
         const response = await axios.get(url, { headers });
         const documentData = response.data;
-        // On print le documentData pour voir ce qu'il contient avec retour a la ligne \n\n
-        console.log(`documentData : ${documentData}\n\n`);
-        console.log(`documentData : ${response}\n\n`);
 
-        return documentData.data?.title || 'Titre non disponible';
+        // console.log(documentData.data[0].dataelements);
+
+        return documentData.data[0].dataelements.title || 'Titre non disponible';
     } catch (error) {
         console.error('Erreur lors de la récupération du titre:', error.message);
         return null;

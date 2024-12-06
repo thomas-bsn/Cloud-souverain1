@@ -10,11 +10,12 @@ async function handleMessage(messageBody) {
             const sourceUrl = message.source;
 
             let nom_doc = 'Titre non disponible';
-            // if (relativePath && sourceUrl) {
-            //     nom_doc = await fetchDocumentTitle(relativePath, sourceUrl);
-            // } else {
-            //     console.warn('Chemin relatif ou source introuvable dans le message.');
-            // }
+            if (relativePath && sourceUrl) {
+                nom_doc = await fetchDocumentTitle(relativePath, sourceUrl);
+                if (!nom_doc) {
+                    nom_doc = 'Titre non disponible';
+                }
+            }
 
             console.log(`Titre du document : ${nom_doc}`);
             console.log(`Type du document : ${subject.subject.type}`);
@@ -22,6 +23,8 @@ async function handleMessage(messageBody) {
             console.log(`ID du document : ${subject.subject.identifier}`);
             console.log(`Chemin relatif du document : ${subject.subject.relativePath}`);
             console.log(`Type d'événement : ${subject.eventType}`);
+
+            console.log("\n\n");
         } else {
             console.log("Le message ne contient pas les champs 'data'.");
         }
