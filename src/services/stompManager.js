@@ -2,6 +2,7 @@ const stompit = require('stompit');
 const { servers, subscribeHeaders } = require('../config/stompConfig');
 const { handleMessage } = require('./messageHandler');
 
+
 function connectToStomp() {
     console.log("Connexion au serveur STOMP...");
 
@@ -24,9 +25,36 @@ function connectToStomp() {
     });
 }
 
-function subscribeToTopic(client) 
-{
-    // TODO: Souscrire au topic
+function subscribeToTopic(client) {
+    console.log("Souscription au topic...");
+
+    client.subscribe(subscribeHeaders, (error, message) => {
+        if (error) {
+            console.error('Erreur de souscription:', error.message);
+            return;
+        }
+
+        message.readString('utf-8', (error, body) => {
+            if (error) {
+                console.error('Erreur de lecture du message:', error.message);
+                return;
+            }
+
+            // console.log('Message reçu:', body);
+
+            try {
+                handleMessage(body);
+
+                client.ack(message);
+                console.log('Message accusé de réception.');
+            } catch (processingError) {
+                console.error('Erreur pendant le traitement du message:', processingError.message);
+            }
+        });
+    });
+
+    console.log("Abonnement prêt. En attente des messages...");
 }
+
 
 module.exports = { connectToStomp };
