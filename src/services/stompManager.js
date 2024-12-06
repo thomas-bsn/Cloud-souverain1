@@ -24,24 +24,9 @@ function connectToStomp() {
     });
 }
 
-function subscribeToTopic(client) {
-    console.log("Souscription au topic...");
-    client.subscribe(subscribeHeaders, (error, message) => {
-        if (error) {
-            console.error('Erreur de souscription:', error.message);
-            return;
-        }
-
-        message.readString('utf-8', (error, body) => {
-            if (error) {
-                console.error('Erreur de lecture du message:', error.message);
-                return;
-            }
-            console.log('Message reçu:', body);
-            handleMessage(body);
-            client.ack(message); // Accuser réception du message
-        });
-    });
+function subscribeToTopic(client) 
+{
+    // TODO: Souscrire au topic
 }
 
 module.exports = { connectToStomp };
