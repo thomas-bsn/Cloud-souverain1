@@ -29,11 +29,12 @@ fi
 
 # Lancer le conteneur Docker
 echo "Lancement du conteneur Docker..."
-docker run -p 4242:4242 -p 3000:3000 --name $CONTAINER_NAME -d cloud-souverain
+CONTAINER_ID=$(docker run -p 4242:4242 -p 3000:3000 --name $CONTAINER_NAME -d cloud-souverain)
 
 # Vérifier si le conteneur s'est lancé avec succès
 if [ $? -eq 0 ]; then
     echo "Conteneur Docker lancé avec succès."
+    echo "ID du conteneur : $CONTAINER_ID"
     echo "Frontend accessible sur http://localhost:3000"
     echo "Backend accessible sur http://localhost:4242"
 else
